@@ -143,7 +143,7 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   function displaySearched(results) {
-    const renderResults = results.map((item) => card(item));
+    const renderResults = results.map((item) => card(item)).join('');
     searchedBooks.innerHTML = renderResults;
   }
 });
