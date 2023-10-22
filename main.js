@@ -103,8 +103,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function addToCompletedBooks(id) {
     const bookData = JSON.parse(localStorage.getItem(BOOK_KEY)) || [];
+
+    // system should find id before add to complete so system can add to complete  a specific data
     const findId = bookData.find((c) => c.id == id);
     if (findId) {
+      // return isComplete boolean true
       findId.isComplete = true;
       localStorage.setItem(BOOK_KEY, JSON.stringify(bookData));
       displayBooks();
@@ -115,6 +118,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function addToIncompletedBooks(id) {
     const bookData = JSON.parse(localStorage.getItem(BOOK_KEY)) || [];
+
+    // system should find id before undo so system can undo a specific data
     const undoById = bookData.find((i) => i.id == id);
     console.log('🚀 ~ file: main.js:68 ~ addToCompletedBooks ~ findId:', undoById);
     if (undoById) {
@@ -126,8 +131,10 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // delete books function
   function deleteBooks(id) {
     const bookData = JSON.parse(localStorage.getItem(BOOK_KEY)) || [];
+    // system should find id before delete so system can delete a specific data
     const findId = bookData.findIndex((item) => item.id == id);
     if (findId !== -1) {
       bookData.splice(findId, 1);
@@ -142,6 +149,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const searchBookTitle = document.getElementById('searchBookTitle');
   // const results = document.getElementById('results');
 
+  // submit search input so user can search book they want
   searchBookInput.addEventListener('submit', (e) => {
     e.preventDefault();
 
