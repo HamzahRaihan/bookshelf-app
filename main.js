@@ -120,6 +120,32 @@ window.addEventListener('DOMContentLoaded', () => {
       console.log(`book with id ${id} not found`);
     }
   }
+
+  const searchBookInput = document.getElementById('searchBook');
+  const searchBookTitle = document.getElementById('searchBookTitle');
+  const searchedBooks = document.getElementById('searchedBooks');
+  const results = document.getElementById('results');
+
+  searchBookInput.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const searchInput = searchBookTitle.value;
+    console.log('🚀 ~ file: main.js:129 ~ searchBook.addEventListener ~ searchInput:', searchInput);
+    const bookData = JSON.parse(localStorage.getItem(BOOK_KEY)) || [];
+    const searchResults = bookData.filter((item) => item.title == searchInput);
+    if (searchResults.length > 0) {
+      displaySearched(searchResults);
+      results.style.display = 'block';
+      console.log('ada');
+    } else {
+      searchedBooks.innerHTML = `<div>Tidak ditemukan</div>`;
+      results.style.display = 'none';
+    }
+  });
+
+  function displaySearched(results) {
+    const renderResults = results.map((item) => card(item));
+    searchedBooks.innerHTML = renderResults;
+  }
 });
 const card = (b) => {
   return `
