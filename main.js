@@ -28,6 +28,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // dan tampilkan konten terbaru
     const bookData = JSON.parse(localStorage.getItem(BOOK_KEY)) || [];
+    console.log('🚀 ~ file: main.js:53 ~ formInputBook.addEventListener ~ bookData:', bookData);
+
     bookData.forEach((book) => {
       if (book.isComplete) {
         completed(book);
@@ -46,7 +48,7 @@ window.addEventListener('DOMContentLoaded', () => {
       id: +new Date(),
       title: inputBookTitle.value,
       author: inputBookAuthor.value,
-      year: inputBookYear.value,
+      year: parseInt(inputBookYear.value),
       isComplete: inputBookIsComplete.checked,
     };
     const bookData = JSON.parse(localStorage.getItem(BOOK_KEY)) || [];
