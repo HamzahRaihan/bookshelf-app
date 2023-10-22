@@ -2,6 +2,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const inCompleteBook = document.getElementById('incompleteBookshelfList');
   const completeBook = document.getElementById('completeBookshelfList');
 
+  // const searchedBooks = document.getElementById('searchedBooks');
+
   const inputBookTitle = document.getElementById('inputBookTitle');
   const inputBookAuthor = document.getElementById('inputBookAuthor');
   const inputBookYear = document.getElementById('inputBookYear');
@@ -11,6 +13,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const BOOK_KEY = 'bookData';
 
   const completed = (book) => {
+    console.log('🚀 ~ file: main.js:14 ~ completed ~ book:', book);
     const bookCard = card(book);
     completeBook.innerHTML += bookCard;
   };
@@ -21,22 +24,34 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   // render book list
-  const displayBooks = () => {
-    // reset semua kontent
+  const displayBooks = (searchs) => {
+    console.log('🚀 ~ file: main.js:25 ~ displayBooks ~ search:', searchs);
+    // reset semua konten
     inCompleteBook.innerHTML = '';
     completeBook.innerHTML = '';
 
     // dan tampilkan konten terbaru
     const bookData = JSON.parse(localStorage.getItem(BOOK_KEY)) || [];
     console.log('🚀 ~ file: main.js:53 ~ formInputBook.addEventListener ~ bookData:', bookData);
+    if (searchs) {
+      searchs?.forEach((search) => {
+        console.log('🚀 ~ file: main.js:41 ~ searchs.forEach ~ search:', search);
+        if (search.isComplete) {
+          completed(search);
+        } else {
+          inComplete(search);
+        }
+      });
+    } else {
+      bookData?.forEach((book) => {
+        if (book.isComplete) {
+          completed(book);
+        } else {
+          inComplete(book);
+        }
+      });
+    }
 
-    bookData.forEach((book) => {
-      if (book.isComplete) {
-        completed(book);
-      } else {
-        inComplete(book);
-      }
-    });
     updateData();
   };
 
@@ -125,29 +140,29 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const searchBookInput = document.getElementById('searchBook');
   const searchBookTitle = document.getElementById('searchBookTitle');
-  const searchedBooks = document.getElementById('searchedBooks');
-  const results = document.getElementById('results');
+  // const results = document.getElementById('results');
 
   searchBookInput.addEventListener('submit', (e) => {
     e.preventDefault();
+
     const searchInput = searchBookTitle.value;
     console.log('🚀 ~ file: main.js:129 ~ searchBook.addEventListener ~ searchInput:', searchInput);
     const bookData = JSON.parse(localStorage.getItem(BOOK_KEY)) || [];
-    const searchResults = bookData.filter((item) => item.title == searchInput);
-    if (searchResults.length > 0) {
-      displaySearched(searchResults);
-      results.style.display = 'block';
-      console.log('ada');
+
+    // if search input has no input give user all books, if user has input give a specific book user's input
+    if (searchInput == '') {
+      const searchResults = JSON.parse(localStorage.getItem(BOOK_KEY)) || [];
+      displayBooks(searchResults);
     } else {
-      searchedBooks.innerHTML = `<div>Tidak ditemukan</div>`;
-      results.style.display = 'none';
+      const searchResults = bookData.filter((item) => item.title == searchInput);
+      displayBooks(searchResults);
     }
   });
 
-  function displaySearched(results) {
-    const renderResults = results.map((item) => card(item)).join('');
-    searchedBooks.innerHTML = renderResults;
-  }
+  // function displaySearched(results) {
+  //   const renderResults = results.map((item) => card(item)).join('');
+  //   searchedBooks.innerHTML = renderResults;
+  // }
 });
 const card = (b) => {
   return `
